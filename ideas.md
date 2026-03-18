@@ -1,0 +1,4 @@
+- számok összegére fogadás
+- számok összegének oszthatóságára fogadás
+- nyerési esélyek kiírása
+- pénz -> nyerési szorzók
