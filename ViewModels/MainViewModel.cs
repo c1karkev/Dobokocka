@@ -9,6 +9,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Controls;
+using System.Windows.Data;
 using System.Windows.Media;
 using System.Windows.Shapes;
 
@@ -28,7 +29,7 @@ namespace Dobokocka.ViewModels
             get => _numberOfDice;
             set
             {
-                _numberOfDice = value;
+                SetProperty(ref _numberOfDice, value);
                 SetupDice();
                 UpdateDisplay();
             }

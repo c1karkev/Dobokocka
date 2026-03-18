@@ -14,12 +14,21 @@
         <Label HorizontalAlignment="Center" FontSize="24" FontWeight="Bold">Kockadobás</Label>
 
         <Label>Kockák száma:</Label>
-        <Slider Minimum="2" Maximum="5" Value="{Binding NumberOfDice}" TickFrequency="1" IsSnapToTickEnabled="True" IsEnabled="{Binding InputEnabled}"/>
+        <Slider Minimum="2" Maximum="10" Value="{Binding NumberOfDice}" TickFrequency="1" IsSnapToTickEnabled="True" IsEnabled="{Binding InputEnabled}"/>
         <Label Content="{Binding NumberOfDice}"/>
 
-        <UniformGrid Columns="3">
-            <ItemsControl ItemsSource="{Binding DiceDisplay}"/>
-        </UniformGrid>
+        <ItemsControl ItemsSource="{Binding DiceDisplay}">
+            <ItemsControl.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center"/>
+                </ItemsPanelTemplate>
+            </ItemsControl.ItemsPanel>
+            <ItemsControl.ItemContainerStyle>
+                <Style>
+                    <Setter Property="FrameworkElement.Margin" Value="5"/>
+                </Style>
+            </ItemsControl.ItemContainerStyle>
+        </ItemsControl>
 
         <Button Command="{Binding RollCommand}">Dobás</Button>
     </StackPanel>
