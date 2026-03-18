@@ -33,13 +33,17 @@ namespace Dobokocka.ViewModels
         }
 
         [RelayCommand]
-        private void Roll()
+        private async Task Roll()
         {
-            foreach(Die d in _dice)
+            for (int i = 0; i < 20; i++)
             {
-                d.Roll();
+                foreach (Die d in _dice)
+                {
+                    d.Roll();
+                }
+                UpdateDisplay();
+                await Task.Delay(100 + (int)Math.Pow(i,2));
             }
-            UpdateDisplay();
         }
 
         private void UpdateDisplay()
