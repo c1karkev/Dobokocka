@@ -1,4 +1,5 @@
-﻿using CommunityToolkit.Mvvm.Input;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
 using Dobokocka.Models;
 using System;
 using System.Collections.Generic;
@@ -13,28 +14,40 @@ using System.Windows.Shapes;
 
 namespace Dobokocka.ViewModels
 {
-    public partial class MainViewModel
+    public partial class MainViewModel : ObservableObject
     {
         private readonly int _diceSize = 60;
         private int _dotSize => _diceSize / 5;
 
-        private readonly List<Die> _dice = new()
-        {
-            new Die(),
-            new Die(),
-            new Die()
-        };
+        private readonly List<Die> _dice = new();
 
-        public ObservableCollection<Canvas> DiceDisplay { get; } = new();
+        public ObservableCollection<Canvas> DiceDisplay { get; } = new(); 
+
+        public int NumberOfDice
+        {
+            get => _numberOfDice;
+            set
+            {
+                _numberOfDice = value;
+                SetupDice();
+                UpdateDisplay();
+            }
+        }
+        private int _numberOfDice = 3;
+
+        [ObservableProperty]
+        private bool _inputEnabled = true;
 
         public MainViewModel()
         {
+            SetupDice();
             UpdateDisplay();
         }
 
         [RelayCommand]
         private async Task Roll()
         {
+            InputEnabled = false;
             for (int i = 0; i < 20; i++)
             {
                 foreach (Die d in _dice)
@@ -43,6 +56,19 @@ namespace Dobokocka.ViewModels
                 }
                 UpdateDisplay();
                 await Task.Delay(100 + (int)Math.Pow(i,2));
+            }
+            InputEnabled = true;
+        }
+
+        private void SetupDice()
+        {
+            _dice.Clear();
+            for (int i = 0; i < _numberOfDice; i++)
+            {
+                if (i >= _dice.Count)
+                {
+                    _dice.Add(new Die());
+                }
             }
         }
 

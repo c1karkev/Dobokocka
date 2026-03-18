@@ -11,8 +11,12 @@
         <viewmodels:MainViewModel/>
     </Window.DataContext>
     <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
-        <Label>Kockadobás</Label>
-        
+        <Label HorizontalAlignment="Center" FontSize="24" FontWeight="Bold">Kockadobás</Label>
+
+        <Label>Kockák száma:</Label>
+        <Slider Minimum="2" Maximum="5" Value="{Binding NumberOfDice}" TickFrequency="1" IsSnapToTickEnabled="True" IsEnabled="{Binding InputEnabled}"/>
+        <Label Content="{Binding NumberOfDice}"/>
+
         <UniformGrid Columns="3">
             <ItemsControl ItemsSource="{Binding DiceDisplay}"/>
         </UniformGrid>
