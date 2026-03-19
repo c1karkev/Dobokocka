@@ -52,7 +52,7 @@
 
         <Button Command="{Binding RollCommand}" DockPanel.Dock="Bottom" Margin="20" MaxWidth="300" >Dobás</Button>
 
-        <ScrollViewer VerticalAlignment="Center" VerticalScrollBarVisibility="Auto">
+        <ScrollViewer VerticalScrollBarVisibility="Auto">
             <StackPanel Margin="30">
                 <Label HorizontalAlignment="Center" FontSize="24" FontWeight="Bold">Kockadobás</Label>
 

@@ -13,10 +13,11 @@ namespace Dobokocka.Models
 
         private static Random r = new Random();
 
-        public int Value { get; set; } = 1;
+        public int Value { get; set; }
         public Brush Color { get; set; }
 
         public Die() {
+            Roll();
             Color = _colors[r.Next(0, _colors.Length)];
         }
 
