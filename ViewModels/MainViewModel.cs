@@ -1,6 +1,7 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Dobokocka.Models;
+using Dobokocka.Repos;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -22,8 +23,10 @@ namespace Dobokocka.ViewModels
         private int _dotSize => _diceSize / 5;
 
         private readonly List<Die> _dice = new();
+        private readonly RollRepo _rollRepo = new RollRepo();
 
         public ObservableCollection<Canvas> DiceDisplay { get; } = new();
+        public ObservableCollection<Roll> Rolls { get; } = new();
         public string Bet { get; set; } = "0";
 
         public int NumberOfDice
@@ -47,6 +50,8 @@ namespace Dobokocka.ViewModels
         {
             SetupDice();
             UpdateDisplay();
+
+            Rolls = new ObservableCollection<Roll>(_rollRepo.GetAll().Reverse());
         }
 
         [RelayCommand]
@@ -87,6 +92,9 @@ namespace Dobokocka.ViewModels
                 Balance += bet * multiplier;
             }
             
+            Roll r = new Roll(_dice.Select(x => x.Value).ToArray(), bet, multiplier);
+            _rollRepo.Add(r);
+            Rolls.Insert(0, r);
         }
 
         private void SetupDice()
