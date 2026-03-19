@@ -10,26 +10,39 @@
     <Window.DataContext>
         <viewmodels:MainViewModel/>
     </Window.DataContext>
-    <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
-        <Label HorizontalAlignment="Center" FontSize="24" FontWeight="Bold">Kockadobás</Label>
+    <DockPanel>
+        <StackPanel DockPanel.Dock="Left" Background="LightGray">
+            <TextBlock Margin="10" Text="{Binding Balance, StringFormat='{}Egyenleg: {0:c0}', ConverterCulture='hu-HU' }"/>
+            <Border BorderThickness="0.5" BorderBrush="Gray" Margin="5 0"/>
+            <StackPanel Margin="10" Orientation="Horizontal">
+                <TextBlock>Tét:</TextBlock>
+                <TextBox Width="75" Margin="5 0 0 0" TextAlignment="Right" Text="{Binding Bet, NotifyOnSourceUpdated=True}"></TextBox>
+                <TextBlock>Ft</TextBlock>
+            </StackPanel>
+            
+        </StackPanel>
+        
+        <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
+            <Label HorizontalAlignment="Center" FontSize="24" FontWeight="Bold">Kockadobás</Label>
 
-        <Label>Kockák száma:</Label>
-        <Slider Minimum="2" Maximum="10" Value="{Binding NumberOfDice}" TickFrequency="1" IsSnapToTickEnabled="True" IsEnabled="{Binding InputEnabled}"/>
-        <Label Content="{Binding NumberOfDice}"/>
+            <Label>Kockák száma:</Label>
+            <Slider Minimum="2" Maximum="10" Value="{Binding NumberOfDice}" TickFrequency="1" IsSnapToTickEnabled="True" IsEnabled="{Binding InputEnabled}"/>
+            <Label Content="{Binding NumberOfDice}"/>
 
-        <ItemsControl ItemsSource="{Binding DiceDisplay}">
-            <ItemsControl.ItemsPanel>
-                <ItemsPanelTemplate>
-                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center"/>
-                </ItemsPanelTemplate>
-            </ItemsControl.ItemsPanel>
-            <ItemsControl.ItemContainerStyle>
-                <Style>
-                    <Setter Property="FrameworkElement.Margin" Value="5"/>
-                </Style>
-            </ItemsControl.ItemContainerStyle>
-        </ItemsControl>
+            <ItemsControl ItemsSource="{Binding DiceDisplay}">
+                <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center"/>
+                    </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+                <ItemsControl.ItemContainerStyle>
+                    <Style>
+                        <Setter Property="FrameworkElement.Margin" Value="5"/>
+                    </Style>
+                </ItemsControl.ItemContainerStyle>
+            </ItemsControl>
 
-        <Button Command="{Binding RollCommand}">Dobás</Button>
-    </StackPanel>
+            <Button Command="{Binding RollCommand}">Dobás</Button>
+        </StackPanel>
+    </DockPanel>
 </Window>

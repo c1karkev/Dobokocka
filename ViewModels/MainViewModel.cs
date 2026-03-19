@@ -23,7 +23,8 @@ namespace Dobokocka.ViewModels
 
         private readonly List<Die> _dice = new();
 
-        public ObservableCollection<Canvas> DiceDisplay { get; } = new(); 
+        public ObservableCollection<Canvas> DiceDisplay { get; } = new();
+        public string Bet { get; set; } = "0";
 
         public int NumberOfDice
         {
@@ -39,6 +40,8 @@ namespace Dobokocka.ViewModels
 
         [ObservableProperty]
         private bool _inputEnabled = true;
+        [ObservableProperty]
+        private int _balance = 10000;
 
         public MainViewModel()
         {
@@ -49,6 +52,24 @@ namespace Dobokocka.ViewModels
         [RelayCommand]
         private async Task Roll()
         {
+            int bet;
+            try
+            {
+                bet = int.Parse(Bet);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("A tét mezőben csak számot szerepelhetnek!");
+                return;
+            }
+
+            if (Balance - bet < 0)
+            {
+                MessageBox.Show("Nincs elég pénze a megadott téthez!");
+                return;
+            }
+
+            Balance -= bet;
             InputEnabled = false;
             for (int i = 0; i < 20; i++)
             {
@@ -60,7 +81,12 @@ namespace Dobokocka.ViewModels
                 await Task.Delay(100 + (int)Math.Pow(i,2));
             }
             InputEnabled = true;
-            MessageBox.Show(CheckWin().ToString());
+            int multiplier = CheckWin();
+            if (multiplier != 0) {
+                MessageBox.Show($"Ön {(bet * multiplier).ToString("c0")}-ot nyert ({multiplier}x)", "Ön nyert!");
+                Balance += bet * multiplier;
+            }
+            
         }
 
         private void SetupDice()
