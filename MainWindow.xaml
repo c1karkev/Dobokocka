@@ -7,7 +7,8 @@
         xmlns:viewmodels="clr-namespace:Dobokocka.ViewModels"
         xmlns:helpers="clr-namespace:Dobokocka.Helpers"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        Title="MainWindow" Height="450" Width="800"
+        MinHeight="300" MinWidth="650">
     <Window.DataContext>
         <viewmodels:MainViewModel/>
     </Window.DataContext>
@@ -16,27 +17,27 @@
     </Window.Resources>
     <DockPanel>
         <!-- Bet panel -->
-        <StackPanel DockPanel.Dock="Left" Background="LightGray">
-            <TextBlock Margin="10" Text="{Binding Balance, StringFormat='{}Egyenleg: {0:c0}', ConverterCulture='hu-HU' }"/>
+        <StackPanel DockPanel.Dock="Left" Background="LightGray" Width="175">
+            <TextBlock Margin="10" Text="{Binding Balance, StringFormat='{}Egyenleg: {0:c0}', ConverterCulture='hu-HU' }" TextAlignment="Center" FontSize="14"/>
             <Border BorderThickness="0.5" BorderBrush="Gray" Margin="5 0"/>
-            <StackPanel Margin="10" Orientation="Horizontal">
+            <StackPanel Margin="10" Orientation="Horizontal" HorizontalAlignment="Center">
                 <TextBlock>Tét:</TextBlock>
-                <TextBox Width="75" Margin="5 0 0 0" TextAlignment="Right" Text="{Binding Bet, NotifyOnSourceUpdated=True}"></TextBox>
+                <TextBox Width="50" Margin="5 0 0 0" TextAlignment="Right" Text="{Binding Bet, NotifyOnSourceUpdated=True}"></TextBox>
                 <TextBlock>Ft</TextBlock>
             </StackPanel>
         </StackPanel>
         
         <!-- Past rolls panel -->
-        <ScrollViewer DockPanel.Dock="Right" Background="LightGray" VerticalScrollBarVisibility="Auto">
+        <ScrollViewer DockPanel.Dock="Right" Background="LightGray" VerticalScrollBarVisibility="Auto" Width="175">
             <StackPanel>
-                <TextBlock Margin="10">Dobási előzmények</TextBlock>
+                <TextBlock Margin="10" FontWeight="Bold" TextAlignment="Center" FontSize="14">Dobási előzmények</TextBlock>
                 <ItemsControl ItemsSource="{Binding Rolls}">
                     <ItemsControl.ItemTemplate>
                         <DataTemplate>
-                            <StackPanel Margin="0 5" Background="LightSlateGray">
-                                <TextBlock Margin="5 5 0 5" Text="{Binding DiceValues, StringFormat='{}Dobások: {0}', Converter={StaticResource IntArrayToStringConverter}}"/>
-                                <TextBlock Margin="5 0 0 5" Text="{Binding Bet, StringFormat='{}Tét: {0:c0}', ConverterCulture='hu-HU'}"/>
-                                <TextBlock Margin="5 0 5 5" Text="{Binding Multiplier, StringFormat='{}Nyerési szorzó: {0}x'}"/>
+                            <StackPanel Margin="0 5" Background="DarkGray">
+                                <TextBlock Margin="10 10 10 2" Text="{Binding DiceValues, StringFormat='{}Dobások: {0}', Converter={StaticResource IntArrayToStringConverter}}" TextWrapping="Wrap"/>
+                                <TextBlock Margin="10 2 10 2" Text="{Binding Bet, StringFormat='{}Tét: {0:c0}', ConverterCulture='hu-HU'}"/>
+                                <TextBlock Margin="10 2 10 10" Text="{Binding Multiplier, StringFormat='{}Nyerési szorzó: {0}x'}"/>
                             </StackPanel>
                         </DataTemplate>
                     </ItemsControl.ItemTemplate>
@@ -48,28 +49,36 @@
                 </ItemsControl>
             </StackPanel>
         </ScrollViewer>
-        
-        <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
-            <Label HorizontalAlignment="Center" FontSize="24" FontWeight="Bold">Kockadobás</Label>
 
-            <Label>Kockák száma:</Label>
-            <Slider Minimum="2" Maximum="10" Value="{Binding NumberOfDice}" TickFrequency="1" IsSnapToTickEnabled="True" IsEnabled="{Binding InputEnabled}"/>
-            <Label Content="{Binding NumberOfDice}"/>
+        <Button Command="{Binding RollCommand}" DockPanel.Dock="Bottom" Margin="20" >Dobás</Button>
 
-            <ItemsControl ItemsSource="{Binding DiceDisplay}">
-                <ItemsControl.ItemsPanel>
-                    <ItemsPanelTemplate>
-                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center"/>
-                    </ItemsPanelTemplate>
-                </ItemsControl.ItemsPanel>
-                <ItemsControl.ItemContainerStyle>
-                    <Style>
-                        <Setter Property="FrameworkElement.Margin" Value="5"/>
-                    </Style>
-                </ItemsControl.ItemContainerStyle>
-            </ItemsControl>
+        <ScrollViewer VerticalAlignment="Center" VerticalScrollBarVisibility="Auto">
+            <StackPanel Margin="30">
+                <Label HorizontalAlignment="Center" FontSize="24" FontWeight="Bold">Kockadobás</Label>
 
-            <Button Command="{Binding RollCommand}">Dobás</Button>
-        </StackPanel>
+                <Label MaxWidth="300">Kockák száma:</Label>
+                <Grid MaxWidth="300">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="auto"/>
+                    </Grid.ColumnDefinitions>
+                    <Slider Grid.Column="0" Minimum="2" Maximum="10" Value="{Binding NumberOfDice}" TickFrequency="1" IsSnapToTickEnabled="True" IsEnabled="{Binding InputEnabled}" VerticalAlignment="Center"/>
+                    <Label Grid.Column="1" Content="{Binding NumberOfDice}" VerticalAlignment="Center"/>
+                </Grid>
+
+                <ItemsControl ItemsSource="{Binding DiceDisplay}">
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <WrapPanel HorizontalAlignment="Center"/>
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+                    <ItemsControl.ItemContainerStyle>
+                        <Style>
+                            <Setter Property="FrameworkElement.Margin" Value="5"/>
+                        </Style>
+                    </ItemsControl.ItemContainerStyle>
+                </ItemsControl>
+            </StackPanel>
+        </ScrollViewer>
     </DockPanel>
 </Window>
