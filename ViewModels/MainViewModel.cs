@@ -8,6 +8,7 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Media;
@@ -59,6 +60,7 @@ namespace Dobokocka.ViewModels
                 await Task.Delay(100 + (int)Math.Pow(i,2));
             }
             InputEnabled = true;
+            MessageBox.Show(CheckWin().ToString());
         }
 
         private void SetupDice()
@@ -145,6 +147,30 @@ namespace Dobokocka.ViewModels
             dot.Width = _dotSize;
             dot.Height = dot.Width;
             return dot;
+        }
+
+        private int CheckWin()
+        {
+            int multiplier = 0;
+
+            Dictionary<int, int> rollValuesStat = _dice.GroupBy(x => x.Value).OrderByDescending(x => x.Count()).ToDictionary(x => x.Key, x => x.Count());
+            foreach (var kvp in rollValuesStat) {
+                int valueMultiplier = 0;
+                if (kvp.Value == _dice.Count)
+                {
+                    valueMultiplier = 2 * _numberOfDice;
+                }
+                else if (kvp.Value >= _dice.Count * (2.0/3.0) && _dice.Count > 3)
+                {
+                    valueMultiplier = (int)(1.2 * _numberOfDice);
+                }
+                else if (kvp.Value >= _dice.Count / 2.0 && _dice.Count > 2)
+                {
+                    valueMultiplier = 1;
+                }
+                    multiplier += valueMultiplier;
+            }
+            return multiplier;
         }
     }
 }
