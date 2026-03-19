@@ -28,6 +28,7 @@ namespace Dobokocka.ViewModels
         public ObservableCollection<Canvas> DiceDisplay { get; } = new();
         public ObservableCollection<Roll> Rolls { get; } = new();
         public string Bet { get; set; } = "0";
+        public int DiceDisplayColCount => Math.Min(NumberOfDice, 5);
 
         public int NumberOfDice
         {
@@ -37,6 +38,7 @@ namespace Dobokocka.ViewModels
                 SetProperty(ref _numberOfDice, value);
                 SetupDice();
                 UpdateDisplay();
+                OnPropertyChanged(nameof(DiceDisplayColCount));
             }
         }
         private int _numberOfDice = 3;
@@ -45,6 +47,7 @@ namespace Dobokocka.ViewModels
         private bool _inputEnabled = true;
         [ObservableProperty]
         private int _balance = 10000;
+        
 
         public MainViewModel()
         {
@@ -99,13 +102,13 @@ namespace Dobokocka.ViewModels
 
         private void SetupDice()
         {
-            _dice.Clear();
-            for (int i = 0; i < _numberOfDice; i++)
+            while (_dice.Count > _numberOfDice)
             {
-                if (i >= _dice.Count)
-                {
-                    _dice.Add(new Die());
-                }
+                _dice.RemoveAt(_dice.Count - 1);
+            }
+            while (_dice.Count < _numberOfDice)
+            {
+                _dice.Add(new Die());
             }
         }
 
@@ -117,7 +120,7 @@ namespace Dobokocka.ViewModels
                 Canvas dieCanvas = new Canvas();
                 dieCanvas.Width = _diceSize;
                 dieCanvas.Height = _diceSize;
-                dieCanvas.Background = Brushes.LightSteelBlue;
+                dieCanvas.Background = d.Color;
 
                 Ellipse dot;
                 // center dot
